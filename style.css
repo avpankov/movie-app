@@ -1,0 +1,29 @@
+body {
+    margin: 0 auto;
+    padding: 0;
+}
+
+.container {
+    max-width: 1440px;
+}
+
+header .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-control {
+    margin: 15px 0;
+    border-radius: 30px;
+    width: 300px;
+}
+
+.form-floating label {
+    top: 15%;
+    left: 22px;
+}
+
+.form-control:focus .form-floating label {
+    transform: scale(.85) translateY(-0.7rem) translateX(0.15rem);
+}
