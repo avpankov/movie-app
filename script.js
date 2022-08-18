@@ -1,17 +1,41 @@
-// let mainContainer = document.querySelector('main .container');
-let title = document.getElementById('floatingInput');
-// title = `title=${title.value}&` || '';
-
+let mainContainer = document.querySelector('main .container');
+let input = document.getElementById('search');
+let label = document.querySelector('.search-form label');
+let searchForm = document.querySelector('.search-form');
 let today = new Date();
 
-let url = `https://imdb-api.com/API/AdvancedSearch/k_diy0nfh9?release_date=${today.getFullYear()}-01-01,${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}&count=100`;
+let url = `https://imdb-api.com/API/AdvancedSearch/k_diy0nfh9?release_date=${today.getFullYear()}-01-01,${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}&count=50&&title_type=feature,tv_movie,tv_series`;
 
-// getMovieData();
+getMovieData(url);
 
-async function getMovieData() {
+input.addEventListener('focus', () => {
+    label.style.display = 'none';
+    label.style.transform = '0.5';
+    searchForm.style.width = '70%';
+});
+input.addEventListener('focusout', () => {
+    if (!input.value) {
+        label.style.transform = 'scale(1) translateY(0)';
+        label.style.transform = '1';
+        searchForm.style.width = '25%';
+        label.style.display = 'block';
+    }
+});
+
+input.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+        mainContainer.innerHTML = '';
+        e.preventDefault();
+        let title = input.value ? `title=${input.value}&` : '';
+        url = `https://imdb-api.com/API/AdvancedSearch/k_diy0nfh9?${title}&count=50&&title_type=feature,tv_movie,tv_series`;
+        getMovieData(url);
+    }
+});
+
+async function getMovieData(url) {
     const res = await fetch(url);
     const data = await res.json();
-    console.log(data.results[7]);
+    console.log(data.results[15]);
     return data.results.map(obj => createMovieCard(obj.image, obj.title, obj.imDbRating, obj.description, obj.genres, obj.runtimeStr, obj.plot));
 }
 
@@ -24,6 +48,7 @@ function createMovieCard(posterUrl, title, rating, description, genres, runtimeS
     let topRated = document.createElement('div');
     topRated.classList.add('movie_top-rated');
     topRated.innerText = 'TOP RATED';
+    if (!rating) return;
     if (rating > 8) moviePoster.append(topRated);
     let movieInfo = document.createElement('div');
     movieInfo.classList.add('movie__info');
