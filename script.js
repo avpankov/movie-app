@@ -1,24 +1,21 @@
 let mainContainer = document.querySelector('main .container');
 let input = document.getElementById('search');
-let label = document.querySelector('.search-form label');
 let searchForm = document.querySelector('.search-form');
 let today = new Date();
 
-let url = `https://imdb-api.com/API/AdvancedSearch/k_diy0nfh9?release_date=${today.getFullYear()}-01-01,${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}&count=50&&title_type=feature,tv_movie,tv_series`;
+let url = `https://imdb-api.com/API/AdvancedSearch/k_diy0nfh9?release_date=${today.getFullYear()}-01-01,${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}&count=36&&title_type=feature,tv_movie,tv_series`;
 
 getMovieData(url);
 
 input.addEventListener('focus', () => {
-    label.style.display = 'none';
-    label.style.transform = '0.5';
     searchForm.style.width = '70%';
+    input.style.textAlign = 'left';
 });
+
 input.addEventListener('focusout', () => {
     if (!input.value) {
-        label.style.transform = 'scale(1) translateY(0)';
-        label.style.transform = '1';
         searchForm.style.width = '25%';
-        label.style.display = 'block';
+        input.style.textAlign = 'center';
     }
 });
 
@@ -27,7 +24,7 @@ input.addEventListener("keypress", (e) => {
         mainContainer.innerHTML = '';
         e.preventDefault();
         let title = input.value ? `title=${input.value}&` : '';
-        url = `https://imdb-api.com/API/AdvancedSearch/k_diy0nfh9?${title}&count=50&&title_type=feature,tv_movie,tv_series`;
+        url = `https://imdb-api.com/API/AdvancedSearch/k_diy0nfh9?${title}&count=36&&title_type=feature,tv_movie,tv_series`;
         getMovieData(url);
     }
 });
@@ -49,7 +46,7 @@ function createMovieCard(posterUrl, title, rating, description, genres, runtimeS
     topRated.classList.add('movie_top-rated');
     topRated.innerText = 'TOP RATED';
     if (!rating) return;
-    if (rating > 8) moviePoster.append(topRated);
+    if (rating >= 8) moviePoster.append(topRated);
     let movieInfo = document.createElement('div');
     movieInfo.classList.add('movie__info');
     let h2 = document.createElement('h2');
@@ -59,11 +56,11 @@ function createMovieCard(posterUrl, title, rating, description, genres, runtimeS
     let span = document.createElement('span');
     span.classList.add('material-symbols-outlined');
     span.innerText = 'grade';
-    h3.innerText = rating;
+    h3.innerText = ` ${rating}`;
     h3.prepend(span);
     movieInfo.append(h3);
     let pMovieInfo = document.createElement('p');
-    pMovieInfo.innerHTML = `${description.replaceAll('(', '').replaceAll(')', '').replaceAll('|', '')}, ${genres}, ${runtimeStr}`;
+    pMovieInfo.innerHTML = `${description.replaceAll('(', '').replaceAll(')', '').replaceAll('|', '').replaceAll('I ', '').replaceAll('– ', '')}, ${genres}, ${runtimeStr}`;
     movieInfo.append(pMovieInfo);
     let pMoviePlot = document.createElement('p');
     pMoviePlot.innerHTML = plot;

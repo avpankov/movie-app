@@ -15,7 +15,7 @@ header .container {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    align-items: center;
+    align-items: stretch;
     margin: 20px auto;
     padding: 0 20px;
 }
@@ -60,29 +60,21 @@ header .container {
     color: rgb(29, 65, 107);
     font-size: 28px;
     transition: all .3s;
+    text-align: center;
+    text-overflow: ellipsis;
+}
+
+#search::placeholder {
+    color: rgb(29, 65, 107);
 }
 
 #search:focus-visible {
     outline-width: 0px;
 }
 
-.search-form label {
-    position: absolute;
-    text-align: right;
-    color: rgb(29, 65, 107);
-    font-size: 28px;
-    top: 10px;
-    right: calc(50% - 141px);
-    transition: transform .3s;
-}
-
-#search:focus .search-form{
+#search:focus .search-form {
     max-width: 75%;
     width: 75%;
-}
-
-#search:visited~label {
-    display: none;
 }
 
 main .container {
@@ -160,13 +152,13 @@ main .container {
     font-size: 28px;
 }
 
-h2 .material-symbols-outlined {
+h3 .material-symbols-outlined {
     font-variation-settings:
         'FILL' 1,
         'wght' 400,
         'GRAD' 0,
         'opsz' 48;
-    color: gold;
+    color: deeppink;
     font-size: 16px;
 }
 
@@ -178,4 +170,26 @@ h2 .material-symbols-outlined {
 .movie__poster:hover .movie__info {
     top: 0;
     opacity: 1;
+}
+
+@media (max-width: 1200px) {
+    #search:focus .search-form{
+        max-width: 30%;
+        width: 30%;
+    }
+}
+
+@media (max-width: 768px) {
+    header .container {
+        flex-direction: column;
+    }
+
+    .search-form {
+        width: 50%;
+    }
+
+    #search:focus .search-form{
+        max-width: 100%;
+        width: 100%;
+    }
 }
